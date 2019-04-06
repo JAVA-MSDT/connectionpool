@@ -1,0 +1,11 @@
+2019-04-06 23:03:46 [main] INFO  com.javamsdt.connectionpool.Runner - Testing Logger
+2019-04-06 23:14:42 [main] INFO  com.javamsdt.connectionpool.Runner - Testing Logger
+2019-04-06 23:14:42 [main] INFO  com.javamsdt.connectionpool.db.ConnectionPool - Connecting to DataBase......
+2019-04-06 23:14:43 [main] INFO  com.javamsdt.connectionpool.db.ConnectionPool - Pool Created successfully.
+2019-04-06 23:17:39 [main] INFO  com.javamsdt.connectionpool.Runner - Testing Logger
+2019-04-06 23:17:39 [main] INFO  com.javamsdt.connectionpool.db.ConnectionPool - Connecting to DataBase......
+2019-04-06 23:17:40 [main] INFO  com.javamsdt.connectionpool.db.ConnectionPool - Pool Created successfully.
+2019-04-06 23:28:04 [main] INFO  com.javamsdt.connectionpool.Runner - Testing Logger
+2019-04-06 23:28:04 [main] INFO  com.javamsdt.connectionpool.db.ConnectionPool - Connecting to DataBase......
+2019-04-06 23:28:05 [main] INFO  com.javamsdt.connectionpool.db.ConnectionPool - Pool Created successfully.
+2019-04-06 23:29:09 [main] INFO  com.javamsdt.connectionpool.Runner - Testing Logger
