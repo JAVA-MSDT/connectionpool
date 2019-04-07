@@ -18,3 +18,25 @@ Establishing a database connection is a very resource-intensive process and invo
 Moreover, in a multi-threaded environment, opening and closing a connection can worsen the situation greatly. 
 
 To get a glimpse of what actually may happen with each request for creating new database 
+
+Order of Creating the pool:
+
+1 - inside file pom.xml you need to add the following dependency ( mysql-connector-java ) check the file.
+
+2 - Create the entity that you want to store in the Sql database.
+
+3 - create SQL script file for creating and inserting the entity to the databse.
+
+4 - Create class DBData to hold constants for your database information.
+
+5 - Create DBConnector to initialize a connection with the database.
+
+6 - Create ProxyConnection that will implement Connection interface which will give us a lot of functionality to use later.
+
+7 . Create ConnetionPool as a singleton.
+
+8 - Exception is up to you to create or not.
+
+** That how i created after reading and searching over the internet for such a connection.
+
+
