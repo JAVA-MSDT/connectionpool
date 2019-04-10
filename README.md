@@ -31,11 +31,9 @@ Order of Creating the pool:
 
 5 - Create DBConnector to initialize a connection with the database.
 
-6 - Create ProxyConnection that will implement Connection interface which will give us a lot of functionality to use later.
+6 . Create ConnetionPool as a singleton.
 
-7 . Create ConnetionPool as a singleton.
-
-8 - Exception is up to you to create or not.
+7 - Exception is up to you to create or not.
 
 ** That how i created after reading and searching over the internet for such a connection.
 
