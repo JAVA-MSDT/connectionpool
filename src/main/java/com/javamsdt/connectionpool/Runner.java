@@ -1,7 +1,6 @@
 package com.javamsdt.connectionpool;
 
 import com.javamsdt.connectionpool.db.ConnectionPool;
-import com.javamsdt.connectionpool.db.ConnectionPoolException;
 import com.javamsdt.connectionpool.util.DBData;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -23,10 +22,10 @@ public class Runner {
         try {
             Class.forName(DBData.DB_DRIVER);
             // all this project is just to test this connection pool
-             connection = ConnectionPool.getInstance().getConnetion(); // the connection pool class.
+             connection = ConnectionPool.getInstance().getConnection(); // the connection pool class.
             statement = connection.createStatement();
-          //  statement.executeUpdate("DROP DATABASE " + DBData.DB_NAME); // if you run the project and the data created successfully
-                                                                          // You need to un comment this line.
+           // statement.executeUpdate("DROP DATABASE " + DBData.DB_NAME); // if you run the project and the data created successfully
+                                                                        // You need to un comment this line.
             statement.executeUpdate("CREATE DATABASE " + DBData.DB_NAME);
             System.out.println("Creating .....");
             statement.executeUpdate("USE " + DBData.DB_NAME);
@@ -41,14 +40,12 @@ public class Runner {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.getMessage();
-        } catch (ConnectionPoolException e) {
-            e.getLocalizedMessage();
         }
 
         printTable(query(statement, "SELECT * FROM user_table"));
     }
 
-    // reading the data from a sql script file and execute the statement it is in the file itself
+    // reading the data from a sql script file and execute the statement which located in the file itself
     public static void updateData(String sqlLocation, Statement statement) throws SQLException {
 
         File file = new File(sqlLocation);

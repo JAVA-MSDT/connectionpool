@@ -1,12 +1,10 @@
 package com.javamsdt.connectionpool.db;
 
-import com.javamsdt.connectionpool.util.DBData;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -20,7 +18,7 @@ public class ConnectionPool {
 
     private final static int POOL_SIZE = 5;
     private final static int ATTEMPTS_LIMIT = 5;
-    private static LinkedBlockingQueue<ProxyConnection> connectionQueue;
+    private static LinkedBlockingQueue<Connection> connectionQueue;
 
     private static Logger logger = LogManager.getLogger();
     private static Lock lock = new ReentrantLock();
@@ -40,8 +38,7 @@ public class ConnectionPool {
         connectionQueue = new LinkedBlockingQueue<>(POOL_SIZE);
         while (currentPoolSize < POOL_SIZE && attemptsCount < ATTEMPTS_LIMIT) {
             try {
-                ProxyConnection proxyConnection = new ProxyConnection(DBConnector.getConnection());
-                connectionQueue.offer(proxyConnection);
+                connectionQueue.offer(DBConnector.getConnection());
                 currentPoolSize++;
             } catch (SQLException e) {
                 attemptsCount++;
@@ -53,6 +50,7 @@ public class ConnectionPool {
         }
 
     }
+
 
     /**
      * @return instance of the pool.
@@ -77,45 +75,31 @@ public class ConnectionPool {
 
     /**
      *
-     * @return connection for =m the connectionQueue pool.
-     * @throws ConnectionPoolException if we Can't get the connection from the connectionQueue.
+     * @return connection for  the connectionQueue pool.
      */
-    public ProxyConnection getConnetion() throws ConnectionPoolException {
-        ProxyConnection connection = null;
+    public Connection getConnection() {
+        Connection connection = null;
 
         try {
             connection = connectionQueue.take();
         } catch (InterruptedException e) {
-            throw new ConnectionPoolException("Can't get the connection from the connectionQueue", e);
+            logger.log(Level.INFO, "Can't get the connection from the connectionQueue at ConnectionPool Class");
+            Thread.currentThread().interrupt();
         }
         return connection;
     }
 
 
-    public static Connection getConnection() {
-        Connection connection = null;
-
-        try {
-            Class.forName(DBData.DB_DRIVER);
-            connection = DriverManager.getConnection(DBData.DB_URI + DBData.DB_NAME, DBData.LOGIN, DBData.PASSWORD);
-        } catch (ClassNotFoundException e) {
-            logger.log(Level.ERROR, e);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return connection;
-    }
-
-    public void returnConnection(ProxyConnection proxyConnection) {
-        connectionQueue.offer(proxyConnection);
+    public void returnConnection(Connection connection) {
+        connectionQueue.offer(connection);
+        logger.log(Level.INFO, "Connection returned to the pool successfully");
     }
 
     public static void closePool(){
         int attemptsCount = 0;
         while (!connectionQueue.isEmpty() && attemptsCount < ATTEMPTS_LIMIT){
             try {
-                connectionQueue.take().closeConnection();
+                connectionQueue.take().close();
             } catch (SQLException e) {
                 attemptsCount++;
                 logger.log(Level.WARN,"Can not close the connection", e);
